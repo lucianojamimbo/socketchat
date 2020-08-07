@@ -25,8 +25,7 @@ def estabsend():
     s.listen(5)
     clientsocket, address = s.accept()
     print("connection from {0} has been established!".format(address))
-    msg = "Connection established"
-    msg = USERN + " says: " + msg
+    msg = USERN + " has connected"
     msg = encode(KEY, msg)
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
