@@ -43,14 +43,16 @@ def send():
 def requestconnection():
     global connectedtopeer
     connectedtopeer = False
+    print("Trying to connect...")
     while connectedtopeer == False:
         try:
-            print("Trying to connect...")
             r.connect((IP, PORT))
             connectedtopeer = True
             print("You have successfully connected to {0} on port {1}".format(IP, PORT))
-        except:
-            print("...")
+        except Exception as e: 
+            print("connection failed for the following reason:")
+            print(e)
+            print("attempting to connect again...")
 
 #Waits for a message from a specified address, then decodes the message with given key and prints to console:
 def receive():
