@@ -1,6 +1,5 @@
 import socket
 import threading
-
 #define things:
 S_IP = "0.0.0.0"
 S_PORT = 25565
@@ -10,7 +9,6 @@ USERN = input("Enter display name")
 PORT = 25565
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 #send setup:
 def estabsend():
     global clientsocket
@@ -23,17 +21,15 @@ def estabsend():
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
 def send():
-    msg = input("Input message to send to peer: ")
+    msg = input()
     msg = USERN + " says: " + msg
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
-
 #receive setup:
 def requestconnection():
     print("Trying to connect...")
     r.connect((IP, PORT))
     print("Connection successful")
-
 def receive():
     HEADERSIZE = 10
     full_msg = ''
@@ -46,10 +42,9 @@ def receive():
             new_msg = False        
         full_msg += msg.decode("utf-8")
         if len(full_msg)-HEADERSIZE == msglen:
-            print(full_msg[HEADERSIZE:])
+            print("\n", full_msg[HEADERSIZE:])
             new_msg = True
             full_msg = ''
-
 #run:
 est_thread = threading.Thread(target=estabsend)
 estrecv_thread = threading.Thread(target=requestconnection)
