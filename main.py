@@ -23,7 +23,7 @@ def estabsend():
     print("Listening for connections...")
     s.listen(5)
     clientsocket, address = s.accept()
-    print("sending connection from {0} has been established!".format(address))
+    print("connection from {0} has been established!".format(address))
     msg = "Connection established"
     msg = USERN + " says: " + msg
     msg = encode(KEY, msg)
@@ -40,9 +40,16 @@ def send():
 
 #attemt to connect to specified IP and port:
 def requestconnection():
-    print("Trying to connect...")
-    r.connect((IP, PORT))
-    print("Connection successful")
+    while True:
+        try:
+            print("Trying to connect...")
+            r.connect((IP, PORT))
+            break
+        except:
+            print("No connection found...")
+            continue
+        print("Connection to peer successful")
+        break
 
 #Waits for a message from a specified address, then decodes the message with given key and prints to console:
 def receive():
