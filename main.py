@@ -6,10 +6,10 @@ from encodedecode import decode
 
 #defining variables
 S_IP = "0.0.0.0"
-S_PORT = 25565
+S_PORT = int(input("Enter port number to host on: "))
 HEADERSIZE = 10
 IP = input("Enter peer IP: ")
-PORT = 25565
+PORT = int(input("Enter peers port number: "))
 socket.setdefaulttimeout(1000000)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
