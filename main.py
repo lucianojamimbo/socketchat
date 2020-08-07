@@ -10,6 +10,7 @@ S_PORT = 25565
 HEADERSIZE = 10
 IP = input("Enter peer IP: ")
 PORT = 25565
+socket.setdefaulttimeout(1000000)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 USERN = input("Enter display name: ")
@@ -33,9 +34,7 @@ def estabsend():
 def send():
     msg = input()
     msg = USERN + " says: " + msg
-    
     msg = encode(KEY, msg)
-    
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
 
