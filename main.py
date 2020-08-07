@@ -1,7 +1,7 @@
 import socket
 import threading
 
-#define shit:
+#define things:
 S_IP = "0.0.0.0"
 S_PORT = 25565
 HEADERSIZE = 10
