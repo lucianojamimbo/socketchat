@@ -1,9 +1,10 @@
+#importing stuff
 import socket
 import threading
 from encodedecode import encode
 from encodedecode import decode 
 
-#define things:
+#defining variables
 S_IP = "0.0.0.0"
 S_PORT = 25565
 HEADERSIZE = 10
@@ -13,7 +14,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 USERN = input("Enter display name: ")
 KEY = input("Enter obscurity key: ")
-#send setup:
+
+#listens and waits for a connection:
 def estabsend():
     global clientsocket
     s.bind((S_IP, S_PORT))
@@ -23,11 +25,11 @@ def estabsend():
     print("sending connection from {0} has been established!".format(address))
     msg = "Connection established"
     msg = USERN + " says: " + msg
-    
     msg = encode(KEY, msg)
-    
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
+
+#once connection established(via estabsend function), sends bytes to whatever address connected:
 def send():
     msg = input()
     msg = USERN + " says: " + msg
@@ -36,11 +38,14 @@ def send():
     
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
-#receive setup:
+
+#attemt to connect to specified IP and port:
 def requestconnection():
     print("Trying to connect...")
     r.connect((IP, PORT))
     print("Connection successful")
+
+#Waits for a message from a specified address, then decodes the message with given key and prints to console:
 def receive():
     HEADERSIZE = 10
     full_msg = ''
@@ -57,14 +62,23 @@ def receive():
             print("\n", decodedmessage)
             new_msg = True
             full_msg = ''
-#run:
+
+#Defining threads for establishing connections:
 est_thread = threading.Thread(target=estabsend)
 estrecv_thread = threading.Thread(target=requestconnection)
+
+#Starting threads
 est_thread.start()
 estrecv_thread.start()
+
+#The join method is used to wait for both send and recieve connections to be ready:
 est_thread.join()
 estrecv_thread.join()
+
+#Define and start thread for receiving messages:
 receive = threading.Thread(target=receive)
 receive.start()
+
+#Send function on loop:
 while True:
     send()
