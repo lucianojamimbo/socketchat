@@ -50,8 +50,8 @@ def receive():
             new_msg = False        
         full_msg += msg.decode("utf-8")
         if len(full_msg)-HEADERSIZE == msglen:
-            decode(KEY, full_msg)
-            print("\n", full_msg[HEADERSIZE:])
+            decodedmessage = decode(KEY, full_msg[HEADERSIZE:])
+            print("\n", decodedmessage)
             new_msg = True
             full_msg = ''
 #run:
