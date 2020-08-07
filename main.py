@@ -20,7 +20,6 @@ KEY = input("Enter obscurity key: ")
 def estabsend():
     global clientsocket
     global peerconnected
-    peerconnected = False
     s.bind((S_IP, S_PORT))
     print("Listening for connections...")
     s.listen(5)
@@ -31,7 +30,6 @@ def estabsend():
     msg = encode(KEY, msg)
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
-    peerconnected = True
 
 #once connection established(via estabsend function), sends bytes to whatever address connected:
 def send():
@@ -45,13 +43,14 @@ def send():
 def requestconnection():
     global connectedtopeer
     connectedtopeer = False
-    try:
-        print("Trying to connect...")
-        r.connect((IP, PORT))
-        connectedtopeer = True
-        print("You have successfully connected to {0} on port {1}".format(IP, PORT))
-    except:
-        print("No connection found...")
+    while connectedtopeer == False:
+        try:
+            print("Trying to connect...")
+            r.connect((IP, PORT))
+            connectedtopeer = True
+            print("You have successfully connected to {0} on port {1}".format(IP, PORT))
+        except:
+            print("...")
 
 #Waits for a message from a specified address, then decodes the message with given key and prints to console:
 def receive():
@@ -75,17 +74,13 @@ def receive():
 est_thread = threading.Thread(target=estabsend)
 estrecv_thread = threading.Thread(target=requestconnection)
 
-connectedtopeer = False
-peerconnected = False
+#Starting threads
+est_thread.start()
+estrecv_thread.start()
 
-while connectedtopeer == False or peerconnected == False:
-    #Starting threads
-    est_thread.start()
-    estrecv_thread.start()
-
-    #The join method is used to wait for both send and recieve connections to be ready:
-    est_thread.join()
-    estrecv_thread.join()
+#The join method is used to wait for both send and recieve connections to be ready:
+est_thread.join()
+estrecv_thread.join()
 
 #Define and start thread for receiving messages:
 receive = threading.Thread(target=receive)
