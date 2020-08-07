@@ -40,16 +40,15 @@ def send():
 
 #attemt to connect to specified IP and port:
 def requestconnection():
-    while True:
+    connected = False
+    while connected == False:
         try:
             print("Trying to connect...")
             r.connect((IP, PORT))
-            break
+            connected = True
         except:
             print("No connection found...")
-            continue
-        print("Connection to peer successful")
-        break
+    print("You have successfully connected to {0} on port {1}".format(IP, PORT))
 
 #Waits for a message from a specified address, then decodes the message with given key and prints to console:
 def receive():
