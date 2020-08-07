@@ -75,6 +75,9 @@ def receive():
 est_thread = threading.Thread(target=estabsend)
 estrecv_thread = threading.Thread(target=requestconnection)
 
+connectedtopeer = False
+peerconnected = False
+
 while connectedtopeer == False or peerconnected == False:
     #Starting threads
     est_thread.start()
