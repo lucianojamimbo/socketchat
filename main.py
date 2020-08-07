@@ -6,6 +6,7 @@ S_IP = "0.0.0.0"
 S_PORT = 25565
 HEADERSIZE = 10
 IP = input("Enter peer IP")
+USERN = input("Enter display name")
 PORT = 25565
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,10 +19,12 @@ def estabsend():
     clientsocket, address = s.accept()
     print("connection from {0} has been established!".format(address))
     msg = "Connection established"
+    msg = USERN + " says: " + msg
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
 def send():
-    msg = input("Input message to send to clients: ")
+    msg = input("Input message to send to peer: ")
+    msg = USERN + " says: " + msg
     msg = f'{len(msg):<{HEADERSIZE}}' + msg
     clientsocket.send(bytes(msg, "utf-8"))
 
@@ -43,7 +46,7 @@ def receive():
             new_msg = False        
         full_msg += msg.decode("utf-8")
         if len(full_msg)-HEADERSIZE == msglen:
-            print("\nServer says: ", full_msg[HEADERSIZE:])
+            print(full_msg[HEADERSIZE:])
             new_msg = True
             full_msg = ''
 
